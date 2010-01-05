@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:uml="http://www.eclipse.org/uml2/1.0.0/UML" xmi:id="aa">
+	<ownedMember xmi:type="uml:PrimitiveType" xmi:id="ad" name="String"/>
+	<ownedMember xmi:type="uml:PrimitiveType" xmi:id="ao" name="int"/>
+	<ownedMember xmi:type="uml:Class" xmi:id="ab" name="Oeuvre">
+		<ownedAttribute xmi:id="ac" name="titre" type="ad"/>
+		<ownedAttribute xmi:id="ae" name="auteur" type="ad"/>
+		<ownedAttribute xmi:id="af" name="exemplaires" type="am" association="ak" lowerValue="0" upperValue="-1"/>
+	</ownedMember>
+	<ownedMember xmi:type="uml:Class" xmi:id="ag" name="Adherent">
+		<ownedAttribute xmi:id="ah" name="nom" type="ad"/>
+		<ownedAttribute xmi:id="ai" name="adresse" type="ad"/>
+		<ownedAttribute xmi:id="aj" name="copies" type="am" association="al" lowerValue="0" upperValue="-1"/>
+	</ownedMember>
+	<ownedMember xmi:type="uml:Class" xmi:id="am" name="Exemplaire">
+		<ownedAttribute xmi:id="an" name="numero" type="ao"/>
+	</ownedMember>
+	<ownedMember xmi:type="uml:Association" xmi:id="ak" name="Copies" memberEnd="ap">
+		<ownedEnd xmi:id="aq" type="ab" association="ak"/>
+	</ownedMember>
+	<ownedMember xmi:type="uml:Association" xmi:id="al" name="Pret" memberEnd="ar">
+		<ownedEnd xmi:id="as" type="ag" association="al"/>
+	</ownedMember>
+</uml:Model>

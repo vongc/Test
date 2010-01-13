@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping package="model">
+   <class name="Oeuvre">
+      <id name="id" column="OEUVRE_ID">
+         <generator class="native"/>
+      </id>
+      <property name="titre"/>
+      <property name="auteur"/>
+      <set name="exemplaires" inverse="true" cascade="all">
+         <key column="OEUVRE_ID"/>
+         <one-to-many class="Exemplaire"/>
+      </set>
+   </class>
+</hibernate-mapping>
+

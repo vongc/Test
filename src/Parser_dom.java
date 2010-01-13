@@ -1,4 +1,5 @@
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,11 +48,12 @@ public class Parser_dom {
 	//****************************************
 	//**************Les variables*************
 	//****************************************
-	public PrintWriter out = null;       //Le flux qui va permettre de genérer le fichier en sortie
+	public static PrintWriter out = null;       //Le flux qui va permettre de genérer le fichier en sortie
 	private String nomClasse = new String();  //Contient le nom d'une classe
 	private Hashtable<String, Vector<String>> CA = new Hashtable<String, Vector<String>>();  //Permet de stocker les clases associées à une autre
-	
-	
+	private String[] tab_nom = {"./mapping1.xml", "./mapping2.xml", "./mapping3.xml"};
+	private static int cpt = 0;
+
 	//*******************************************
 	//**********On charge le fichier xml*********
 	//***Rem changer Package par ModelElement****
@@ -70,16 +72,6 @@ public class Parser_dom {
 	//******** On parcourt le fichier xml ************
 	//************************************************
 	public void parse(InputStream _xml_input_file) throws SAXException, ParserConfigurationException, IOException {
-
-	//création du fichier output
-	out = new PrintWriter(new FileOutputStream("./mapping.xml"));
-	
-	//On crée l'entête
-	out.println("<?xml version=\"1.0\"?>");
-	out.println("<!DOCTYPE hibernate-mapping PUBLIC");
-	out.println("\"-//Hibernate/Hibernate Mapping DTD 3.0//EN\"");
-	out.println("\"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd\">");
-	out.println(""); out.println("");
 
 	//instancier le contrcuteur de parseurs
 	DocumentBuilderFactory _factory = DocumentBuilderFactory.newInstance();
@@ -111,6 +103,9 @@ public class Parser_dom {
 			Element c = (Element) NodeMem;
 			if(c.hasAttribute("xmi:type") && c.getAttribute("xmi:type").compareTo("uml:Class")==0)
 			{
+				//Affichage entête
+				template_entete();
+				
 				//On récupère le nom de la classe
 				nomClasse = c.getAttribute("name"); 
 				//Affichage classe
@@ -150,7 +145,7 @@ public class Parser_dom {
 						else
 						{
 							//On récupère le nom de l'association grâce à la valeur de l'association et au ownedmembers
-							String nom_assos = new String();
+							String nom_assos = a.getAttribute("name");   //On récupère l'assos'
 							String nom_class_assos = new String();
 							//On cherche pour cela les associations (qui sont des owned members)
 							for(int k=0; k<listemem.getLength(); k++)
@@ -159,11 +154,11 @@ public class Parser_dom {
 								if(NodeAssos.getNodeType()==Node.ELEMENT_NODE)
 								{
 									Element as = (Element) NodeAssos; 
-									//Nom de l'association
+									/*//Nom de l'association
 									if(as.getAttribute("xmi:type").compareTo("uml:Association")==0 && as.getAttribute("xmi:id").compareTo(a.getAttribute("association"))==0)  //Si c'est la bonne association
 									{
 										nom_assos = as.getAttribute("name"); 
-									}
+									}*/
 									//Nom de la classe associée
 									if(as.getAttribute("xmi:type").compareTo("uml:Class")==0 && as.getAttribute("xmi:id").compareTo(a.getAttribute("type"))==0)  //Si c'est la bonne classe associée
 									{
@@ -193,12 +188,30 @@ public class Parser_dom {
 		}
 			
 	}
-	
-	
-	//On ferme le flux
-	out.close();
-	out.flush();
 	}
+	
+	//********************************************
+	//********Affichage entête********************
+	//********************************************
+	public void template_entete()
+	{
+		//création du fichier output
+		try {
+			out = new PrintWriter(new FileOutputStream(tab_nom[cpt]));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//On crée l'entête
+		out.println("<?xml version=\"1.0\"?>");
+		out.println("<!DOCTYPE hibernate-mapping PUBLIC");
+		out.println("\"-//Hibernate/Hibernate Mapping DTD 3.0//EN\"");
+		out.println("\"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd\">");
+		out.println(""); out.println("");
+		System.out.println(cpt+1);
+	}
+	
 	
 	//********************************************
 	//*********Affichage début + classe***********
@@ -238,12 +251,18 @@ public class Parser_dom {
 		out.println("      <many-to-one name=\""+nom_classe.toLowerCase()+"\" column=\""+nom_classe.toUpperCase()+"\"_ID"+" not-null=\"true\"/>");
 	}
 	
-	//Affichage fin des classes
+	//*********************************************
+	//********Affichage fin des classes************
+	//*********************************************
 	public void template_end()
 	{
 		out.println("   </class>");
 		out.println("</hibernate-mapping>");
 		out.println("");
+		//On ferme le flux
+		out.close();
+		out.flush();
+		cpt++;
 	}
 }
 

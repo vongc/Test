@@ -12,7 +12,7 @@
       </id>
       <property name="titre"/>
       <property name="auteur"/>
-      <set name="Copies" inverse="true" cascade="all">
+      <set name="exemplaires" inverse="true" cascade="all">
          <key column="OEUVRE_ID"/>
          <one-to-many class="Exemplaire"/>
       </set>
@@ -27,7 +27,7 @@
       </id>
       <property name="nom"/>
       <property name="adresse"/>
-      <set name="Pret" inverse="true" cascade="all">
+      <set name="copies" inverse="true" cascade="all">
          <key column="ADHERENT_ID"/>
          <one-to-many class="Exemplaire"/>
       </set>

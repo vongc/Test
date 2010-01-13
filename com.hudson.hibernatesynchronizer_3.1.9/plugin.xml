@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="com.hudson.hibernatesynchronizer"
+   name="Hibernate Synchronizer"
+   version="3.1.9"
+   provider-name=""
+   class="com.hudson.hibernatesynchronizer.Plugin">
+
+   <runtime>
+      <library name="xmlplugin.jar">
+         <export name="*"/>
+      </library>
+      <library name="velocity-dep-1.4.jar">
+         <export name="*"/>
+         <packages prefixes="org.apache"/>
+      </library>
+      <library name="xercesImpl.jar">
+         <export name="*"/>
+         <packages prefixes="org.apache"/>
+      </library>
+      <library name="xmlParserAPIs.jar">
+         <export name="*"/>
+         <packages prefixes="org"/>
+      </library>
+   </runtime>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="org.eclipse.ui.views"/>
+   </requires>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="Hibernate Synchronizer Editor"
+            extensions="hbm,xml"
+            icon="icons/hibernate.gif"
+            class="com.hudson.hibernatesynchronizer.editors.synchronizer.Editor"
+            contributorClass="com.hudson.hibernatesynchronizer.editors.synchronizer.Contributor"
+            id="com.hudson.hibernatesynchronizer.editors.synchronizer.Editor">
+      </editor>
+      <editor
+            name="Hibernate Template Editor"
+            extensions="svm,tvm"
+            icon="icons/hibernate.gif"
+            class="com.hudson.hibernatesynchronizer.editors.velocity.Editor"
+            contributorClass="com.hudson.hibernatesynchronizer.editors.velocity.Contributor"
+            id="com.hudson.hibernatesynchronizer.editors.velocity.Editor">
+      </editor>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.hbm"
+            id="com.hudson.hibernatesynchronizer.contribution1">
+         <menu
+               label="Hibernate Synchronizer"
+               path="additions"
+               id="com.hudson.hibernatesynchronizer.menu1">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+               label="Create DDL"
+               class="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.HBM2DDL"
+               menubarPath="com.hudson.hibernatesynchronizer.menu1/group1"
+               id="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.HBM2DDL">
+         </action>
+         <action
+               label="Remove Files"
+               class="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.RemoveRelatedFiles"
+               menubarPath="com.hudson.hibernatesynchronizer.menu1/group1"
+               id="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.RemoveRelatedFiles">
+         </action>
+         <action
+               label="Synchronize and Overwrite"
+               class="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.SynchronizeOverwriteFiles"
+               menubarPath="com.hudson.hibernatesynchronizer.menu1/group1"
+               id="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.SynchronizeOverwriteFiles">
+         </action>
+         <action
+               label="Synchronize Files"
+               class="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.SynchronizeFiles"
+               menubarPath="com.hudson.hibernatesynchronizer.menu1/group1"
+               id="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.SynchronizeFiles">
+         </action>
+         <action
+               label="Add Mapping Reference"
+               class="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.AddMappingReference"
+               menubarPath="com.hudson.hibernatesynchronizer.menu1/group1"
+               id="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.AddMappingReference">
+         </action>
+      </objectContribution>
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.xml"
+            id="com.hudson.hibernatesynchronizer.contribution1">
+         <menu
+               label="Hibernate Synchronizer"
+               path="additions"
+               id="com.hudson.hibernatesynchronizer.menu1">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+               label="Associate With Editor"
+               class="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.AssociateWithEditor"
+               menubarPath="com.hudson.hibernatesynchronizer.menu1/group1"
+               id="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.AssociateWithEditor">
+         </action>
+         <action
+               label="Create DDL"
+               class="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.HBM2DDL"
+               menubarPath="com.hudson.hibernatesynchronizer.menu1/group1"
+               id="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.HBM2DDL">
+         </action>
+         <action
+               label="Remove Files"
+               class="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.RemoveRelatedFiles"
+               menubarPath="com.hudson.hibernatesynchronizer.menu1/group1"
+               id="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.RemoveRelatedFiles">
+         </action>
+         <action
+               label="Synchronize and Overwrite"
+               class="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.SynchronizeOverwriteFiles"
+               menubarPath="com.hudson.hibernatesynchronizer.menu1/group1"
+               id="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.SynchronizeOverwriteFiles">
+         </action>
+         <action
+               label="Synchronize Files"
+               class="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.SynchronizeFiles"
+               menubarPath="com.hudson.hibernatesynchronizer.menu1/group1"
+               id="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.SynchronizeFiles">
+         </action>
+         <action
+               label="Add Mapping Reference"
+               class="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.AddMappingReference"
+               menubarPath="com.hudson.hibernatesynchronizer.menu1/group1"
+               id="com.hudson.hibernatesynchronizer.editors.synchronizer.actions.AddMappingReference">
+         </action>
+      </objectContribution>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="Hibernate"
+            id="net.sf.hibernate">
+      </category>
+      <wizard
+            name="Hibernate Configuration File"
+            icon="icons/hibernate.gif"
+            category="net.sf.hibernate"
+            class="com.hudson.hibernatesynchronizer.wizard.NewConfigurationWizard"
+            id="com.hudson.hibernatesynchronizer.wizard.NewConfigurationWizard">
+      </wizard>
+      <wizard
+            name="Hibernate Mapping File"
+            icon="icons/hibernate.gif"
+            category="net.sf.hibernate"
+            class="com.hudson.hibernatesynchronizer.wizard.MappingWizard"
+            id="com.hudson.hibernatesynchronizer.wizard.MappingWizard">
+      </wizard>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="Hibernate Synchronizer"
+            class="com.hudson.hibernatesynchronizer.preferences.MainPreferences"
+            id="com.hudson.hibernatesynchronizer.preferences.MainPreferences">
+      </page>
+      <page
+            name="Templates"
+            category="com.hudson.hibernatesynchronizer.preferences.MainPreferences"
+            class="com.hudson.hibernatesynchronizer.preferences.TemplatePreferences"
+            id="com.hudson.hibernatesynchronizer.preferences.TemplatePreferences">
+      </page>
+      <page
+            name="Snippets"
+            category="com.hudson.hibernatesynchronizer.preferences.MainPreferences"
+            class="com.hudson.hibernatesynchronizer.preferences.SnippetPreferences"
+            id="com.hudson.hibernatesynchronizer.preferences.SnippetPreferences">
+      </page>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            objectClass="org.eclipse.core.resources.IProject"
+            adaptable="true"
+            name="Hibernate Synchronizer"
+            class="com.hudson.hibernatesynchronizer.properties.HibernateProperties"
+            id="com.hudson.hibernatesynchronizer.properties.ProjectProperties">
+      </page>
+   </extension>
+</plugin>

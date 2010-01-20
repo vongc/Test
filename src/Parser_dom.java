@@ -49,9 +49,11 @@ public class Parser_dom {
 	//**************Les variables*************
 	//****************************************
 	public static PrintWriter out = null;       //Le flux qui va permettre de genérer le fichier en sortie
+	public static PrintWriter out2 = null;      //Le flux qui va permettre de générer les fichiers java
 	private String nomClasse = new String();  //Contient le nom d'une classe
 	private Hashtable<String, Vector<String>> CA = new Hashtable<String, Vector<String>>();  //Permet de stocker les clases associées à une autre
-	private String[] tab_nom = {"./mapping1.xml", "./mapping2.xml", "./mapping3.xml"};
+	private String[] tab_nom = {"./mapping1.hbm.xml", "./mapping2.hbm.xml", "./mapping3.hbm.xml"};
+	private String[] tab_classe = {"./Oeuvre.java", "./Adherent.java", "./Exemplaire.java"};
 	private static int cpt = 0;
 
 	//*******************************************
@@ -198,6 +200,7 @@ public class Parser_dom {
 		//création du fichier output
 		try {
 			out = new PrintWriter(new FileOutputStream(tab_nom[cpt]));
+			out2 = new PrintWriter(new FileOutputStream(tab_classe[cpt]));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -219,11 +222,12 @@ public class Parser_dom {
 	public void template_classe()
 	{
 		out.println("");
-		out.println("<hibernate-mapping package=\"model\">");
+		out.println("<hibernate-mapping package=\"com.efrei.content_provider\">");
 		out.println("   <class name=\""+nomClasse+"\">");
 		out.println("      <id name=\"id\" column=\""+nomClasse.toUpperCase()+"_ID"+"\">");
 		out.println("         <generator class=\"native\"/>");
 		out.println("      </id>");
+		entete_classe();  //Création fichier java
 	}
 	
 	
@@ -233,6 +237,7 @@ public class Parser_dom {
 	public void template_attribute(String attr)
 	{
 		out.println("      <property name=\""+attr+"\"/>");
+		contenu_classe(attr, "String");   //Contenu fichier java
 	}
 	
 	
@@ -245,10 +250,11 @@ public class Parser_dom {
 		out.println("         <key column=\""+nomClasse.toUpperCase()+"_ID"+"\"/>");
 		out.println("         <one-to-many class=\""+nom_class_assos+"\"/>");
 		out.println("      </set>");
+		cardinalite_classe(nom_assos,nom_class_assos);
 	}	
 	public void template_associe(String nom_classe)
 	{
-		out.println("      <many-to-one name=\""+nom_classe.toLowerCase()+"\" column=\""+nom_classe.toUpperCase()+"\"_ID"+" not-null=\"true\"/>");
+		out.println("      <many-to-one name=\""+nom_classe.toLowerCase()+"\" class=\""+nom_classe+"\" column=\""+nom_classe.toUpperCase()+"_ID\""+" not-null=\"true\"/>");
 	}
 	
 	//*********************************************
@@ -259,12 +265,57 @@ public class Parser_dom {
 		out.println("   </class>");
 		out.println("</hibernate-mapping>");
 		out.println("");
+		out2.println("}");
+		out2.println("");
 		//On ferme le flux
-		out.close();
-		out.flush();
+		out.close();out.flush();
+		out2.close();out2.flush();
 		cpt++;
 	}
+	
+	//*********************************************
+	//*******Affichage entete fichier java*********
+	//*********************************************
+	public void entete_classe()
+	{
+		out2.println("package com.efrei.content_provider;");
+		out2.println("import java.io.Serializable;");
+		out2.println("import java.util.Set;\n");
+		out2.println("public class "+nomClasse+" implements Serializable{");
+		out2.println("    private Long id;");
+		out2.println("    public Long getId()");
+		out2.println("    {   return id; }");
+		out2.println("    public void setId(Long id)");
+		out2.println("    {   this.id=id;   }");
+		out2.println("");
+	}
+	
+	//*********************************************
+	//*******Affichage contenu fichier java*********
+	//*********************************************
+	public void contenu_classe(String attr, String type)
+	{
+		String attrtemp = attr.substring(0, 1).toUpperCase()+attr.substring(1);
+		out2.println("    private "+type+" "+attr+";");
+		out2.println("    public String get"+attrtemp+"()");
+		out2.println("    {   return "+attr+";   }");
+		out2.println("    public void set"+attrtemp+ "("+type+" "+attr+")");
+		out2.println("    {   this."+attr+"="+attr+";   }");
+		out2.println("");
+	}
+	
+	public void cardinalite_classe(String nom_assos, String nom_class_assos)
+	{
+		String nom_assos_temp = nom_assos.substring(0,1).toUpperCase()+nom_assos.substring(1);
+		out2.println("    private Set<"+nom_class_assos+">"+" "+nom_assos+";");
+		out2.println("    public Set<"+nom_class_assos+">"+" get"+nom_assos_temp+"()");
+		out2.println("    {   return "+nom_assos+";   }");
+		out2.println("    public void set"+nom_class_assos+ "("+"Set<"+nom_class_assos+"> "+nom_assos+")");
+		out2.println("    {   this."+nom_assos+"="+nom_assos+";   }");
+		out2.println("");
+	}
 }
+
 
 
 

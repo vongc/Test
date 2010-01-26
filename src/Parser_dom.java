@@ -255,6 +255,7 @@ public class Parser_dom {
 	public void template_associe(String nom_classe)
 	{
 		out.println("      <many-to-one name=\""+nom_classe.toLowerCase()+"\" class=\""+nom_classe+"\" column=\""+nom_classe.toUpperCase()+"_ID\""+" not-null=\"true\"/>");
+		classassos_association(nom_classe);
 	}
 	
 	//*********************************************
@@ -312,6 +313,17 @@ public class Parser_dom {
 		out2.println("    {   return "+nom_assos+";   }");
 		out2.println("    public void set"+nom_class_assos+ "("+"Set<"+nom_class_assos+"> "+nom_assos+")");
 		out2.println("    {   this."+nom_assos+"="+nom_assos+";   }");
+		out2.println("");
+	}
+	
+	public void classassos_association(String nom_classe)
+	{
+		String nom_classe_minuscule = nom_classe.substring(0,1).toLowerCase()+nom_classe.substring(1);
+		out2.println("    private "+nom_classe+" "+nom_classe_minuscule+";");
+		out2.println("    public get"+nom_classe+"()");
+		out2.println("    {   return "+nom_classe_minuscule+";   }");
+		out2.println("    public void set"+nom_classe+ "("+nom_classe+" "+nom_classe_minuscule+")");
+		out2.println("    {   this."+nom_classe_minuscule+"="+nom_classe_minuscule+";   }");
 		out2.println("");
 	}
 }

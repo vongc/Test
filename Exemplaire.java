@@ -15,5 +15,17 @@ public class Exemplaire implements Serializable{
     public void setNumero(String numero)
     {   this.numero=numero;   }
 
+    private Oeuvre oeuvre;
+    public getOeuvre()
+    {   return oeuvre;   }
+    public void setOeuvre(Oeuvre oeuvre)
+    {   this.oeuvre=oeuvre;   }
+
+    private Adherent adherent;
+    public getAdherent()
+    {   return adherent;   }
+    public void setAdherent(Adherent adherent)
+    {   this.adherent=adherent;   }
+
 }
 
